@@ -37,7 +37,7 @@ public slots:
     void createMap();
 
 private:
-    int type_obj(QRadioButton *b[4]);
+    int type_obj(QRadioButton ***b[4],int a ,int c);
 
     QWidget *zoneCentrale;
     //QGroupBox *groupbox[H][W];

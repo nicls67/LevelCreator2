@@ -18,8 +18,8 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    h=6;
-    w=6;
+    h=5;
+    w=5;
 
     //resize(400,400);
     zoneCentrale = new QWidget;
@@ -70,8 +70,8 @@ MainWindow::MainWindow(QWidget *parent)
     QLabel *labelX = new QLabel("Colonne : ");
     spinBoxY = new QSpinBox;
     spinBoxX = new QSpinBox;
-    spinBoxX->setRange(1,W);
-    spinBoxY->setRange(1,H);
+    spinBoxX->setRange(1,w);
+    spinBoxY->setRange(1,h);
     QHBoxLayout *layoutMario1 = new QHBoxLayout;
     QHBoxLayout *layoutMario2 = new QHBoxLayout;
     QVBoxLayout *layoutMario = new QVBoxLayout;
@@ -108,14 +108,14 @@ MainWindow::~MainWindow()
     
 }
 
-int MainWindow::type_obj(QRadioButton *b[4]){
+int MainWindow::type_obj(QRadioButton ***b[4],int a,int c){
     int i;
 
-    if(b[1]->isChecked()==true)
+    if(b[1][a][c]->isChecked()==true)
         i=MUR;
-    else if (b[2]->isChecked()==true)
+    else if (b[2][a][c]->isChecked()==true)
         i=CAISSE;
-    else if (b[3]->isChecked()==true)
+    else if (b[3][a][c]->isChecked()==true)
         i=OBJECTIF;
     else
         i=VIDE;
@@ -124,15 +124,17 @@ int MainWindow::type_obj(QRadioButton *b[4]){
 }
 
 void MainWindow::createMap(){
-    int tab[H][W];
+    int **tab;
+    tab = new int*[h];
     position pos;
     int nbCaisse=0;
     int nbObj=0;
 
     //creation carte
     for(int i=0;i<H;i++){
+        tab[i] = new int[w];
         for(int j=0;j<W;j++){
-            tab[i][j]=type_obj(radioButton[i][j]);
+            tab[i][j]=type_obj(radioButton,i,j);
             if(tab[i][j]==CAISSE)
                 nbCaisse++;
             if(tab[i][j]==OBJECTIF)
@@ -170,7 +172,13 @@ void MainWindow::createMap(){
     if(!f.is_open())
         QMessageBox::critical(this, "Erreur", "Impossible d'enregistrer le niveau");
     else{
-        f.write((char*)&tab,sizeof(int[H][W]));
+        f.write((char*)&w,sizeof(int));
+        f.write((char*)&h,sizeof(int));
+        for(int i=0;i<h;i++){
+            for(int j=0;j<w;j++){
+                f.write((char*)&tab[i][j],sizeof(int));
+            }
+        }
         f.write((char*)&pos,sizeof(position));
         f.close();
     }
