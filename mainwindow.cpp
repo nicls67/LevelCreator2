@@ -18,6 +18,9 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
+    h=6;
+    w=6;
+
     //resize(400,400);
     zoneCentrale = new QWidget;
     setCentralWidget(zoneCentrale);
@@ -26,22 +29,37 @@ MainWindow::MainWindow(QWidget *parent)
     QGroupBox *boxGrille = new QGroupBox("Position des objets");
     QGroupBox *boxMario = new QGroupBox("Position de Mario");
 
-    for(int i=0;i<H;i++){
-        for(int j=0;j<W;j++){
+
+    groupbox = new QGroupBox**[h];
+    vbox = new QVBoxLayout**[h];
+
+    for(int k=0;k<4;k++)
+        radioButton[k] = new QRadioButton**[h];
+
+
+    for(int i=0;i<h;i++){
+
+        groupbox[i]= new QGroupBox*[w];
+        vbox[i] = new QVBoxLayout*[w];
+
+        for(int k=0;k<4;k++)
+            radioButton[k][i] = new QRadioButton*[w];
+
+        for(int j=0;j<w;j++){
             groupbox[i][j]= new QGroupBox("Case "+QString::number(i+1)+","+QString::number(j+1));
             layoutGrille->addWidget(groupbox[i][j],i,j);
 
-            radioButton[i][j][0] = new QRadioButton("Vide");
-            radioButton[i][j][1] = new QRadioButton("Mur");
-            radioButton[i][j][2] = new QRadioButton("Caisse");
-            radioButton[i][j][3] = new QRadioButton("Objectif");
-            radioButton[i][j][0]->setChecked(true);
+            radioButton[0][i][j] = new QRadioButton("Vide");
+            radioButton[1][i][j] = new QRadioButton("Mur");
+            radioButton[2][i][j] = new QRadioButton("Caisse");
+            radioButton[3][i][j] = new QRadioButton("Objectif");
+            radioButton[0][i][j]->setChecked(true);
 
             vbox[i][j] = new QVBoxLayout;
-            vbox[i][j]->addWidget(radioButton[i][j][0]);
-            vbox[i][j]->addWidget(radioButton[i][j][1]);
-            vbox[i][j]->addWidget(radioButton[i][j][2]);
-            vbox[i][j]->addWidget(radioButton[i][j][3]);
+            vbox[i][j]->addWidget(radioButton[0][i][j]);
+            vbox[i][j]->addWidget(radioButton[1][i][j]);
+            vbox[i][j]->addWidget(radioButton[2][i][j]);
+            vbox[i][j]->addWidget(radioButton[3][i][j]);
 
             groupbox[i][j]->setLayout(vbox[i][j]);
         }
@@ -81,6 +99,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(button,SIGNAL(clicked()),this,SLOT(createMap()));
 
     zoneCentrale->setLayout(layout);
+
+
 }
 
 MainWindow::~MainWindow()

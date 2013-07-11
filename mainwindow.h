@@ -21,7 +21,7 @@
 #include <QMessageBox>
 #include <fstream>
 
-#include "common.h"
+#include "../../../SobokanV2/SobokanV2/common.h"
 
 using namespace std;
 
@@ -40,11 +40,18 @@ private:
     int type_obj(QRadioButton *b[4]);
 
     QWidget *zoneCentrale;
-    QGroupBox *groupbox[H][W];
-    QVBoxLayout *vbox[H][W];
-    QRadioButton *radioButton[H][W][4];
+    //QGroupBox *groupbox[H][W];
+    //QVBoxLayout *vbox[H][W];
+    //QRadioButton *radioButton[H][W][4];
+
+    QGroupBox ***groupbox;
+    QVBoxLayout ***vbox;
+    QRadioButton ***radioButton[4];
+
     QSpinBox *spinBoxY;
     QSpinBox *spinBoxX;
+    int w;
+    int h;
 };
 
 #endif // MAINWINDOW_H
