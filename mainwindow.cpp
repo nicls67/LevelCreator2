@@ -126,7 +126,7 @@ int MainWindow::type_obj(QRadioButton ***b[4],int a,int c){
 void MainWindow::createMap(){
     int **tab;
     tab = new int*[h];
-    position pos;
+    position *pos = new position();
     int nbCaisse=0;
     int nbObj=0;
 
@@ -154,8 +154,8 @@ void MainWindow::createMap(){
     int posX = spinBoxX->value()-1;
     int posY = spinBoxY->value()-1;
     if(tab[posX][posY]==VIDE){
-        pos.x=posX;
-        pos.y=posY;
+        pos->setX(posX);
+        pos->setY(posY);
     }
     else{
         QMessageBox::critical(this, "Erreur", "Mario doit être placé sur une case vide !");
@@ -179,7 +179,7 @@ void MainWindow::createMap(){
                 f.write((char*)&tab[i][j],sizeof(int));
             }
         }
-        f.write((char*)&pos,sizeof(position));
+        f.write((char*)pos,sizeof(position));
         f.close();
     }
 
